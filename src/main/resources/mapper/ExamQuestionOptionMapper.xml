@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.module.exam_question_option.mapper.ExamQuestionOptionMapper">
+
+    <sql id="whereCondition">
+        <where>
+            <if test="entity.id != null">
+                AND examQuestionOption.id = #{entity.id}
+            </if>
+            <if test="entity.questionId != null">
+                AND examQuestionOption.question_id = #{entity.questionId}
+            </if>
+            <if test="entity.optionKey != null and entity.optionKey != ''">
+                AND examQuestionOption.option_key LIKE CONCAT('%', #{entity.optionKey}, '%')
+            </if>
+            <if test="entity.questionTitle != null and entity.questionTitle != ''">
+                AND examQuestion.question_title LIKE CONCAT('%', #{entity.questionTitle}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultType="com.law.train.module.exam_question_option.entity.ExamQuestionOption">
+        SELECT examQuestionOption.*
+        , examQuestion.question_title AS questionTitle
+        FROM exam_question_option examQuestionOption
+        LEFT JOIN exam_question examQuestion ON examQuestionOption.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+        ORDER BY examQuestionOption.sort_no ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="countQuery" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_question_option examQuestionOption
+        LEFT JOIN exam_question examQuestion ON examQuestionOption.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+    </select>
+
+    <!-- 列表查询（不分页），显式 AS 保证 optionKey/optionContent 映射到实体 -->
+    <select id="listQuery" resultType="com.law.train.module.exam_question_option.entity.ExamQuestionOption">
+        SELECT examQuestionOption.id
+        , examQuestionOption.question_id AS questionId
+        , examQuestionOption.option_key AS optionKey
+        , examQuestionOption.option_content AS optionContent
+        , examQuestionOption.sort_no AS sortNo
+        , examQuestion.question_title AS questionTitle
+        FROM exam_question_option examQuestionOption
+        LEFT JOIN exam_question examQuestion ON examQuestionOption.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+        ORDER BY examQuestionOption.sort_no ASC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="getById" resultType="com.law.train.module.exam_question_option.entity.ExamQuestionOption">
+        SELECT examQuestionOption.*
+        , examQuestion.question_title AS questionTitle
+        FROM exam_question_option examQuestionOption
+        LEFT JOIN exam_question examQuestion ON examQuestionOption.question_id = examQuestion.id
+        WHERE examQuestionOption.id = #{id}
+    </select>
+
+</mapper>

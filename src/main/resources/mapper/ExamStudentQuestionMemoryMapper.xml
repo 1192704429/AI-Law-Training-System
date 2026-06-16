@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.module.exam_student_question_memory.mapper.ExamStudentQuestionMemoryMapper">
+
+    <sql id="whereCondition">
+        <where>
+            <if test="entity.id != null">
+                AND examStudentQuestionMemory.id = #{entity.id}
+            </if>
+            <if test="entity.studentId != null">
+                AND examStudentQuestionMemory.student_id = #{entity.studentId}
+            </if>
+            <if test="entity.courseId != null">
+                AND examStudentQuestionMemory.course_id = #{entity.courseId}
+            </if>
+            <if test="entity.questionId != null">
+                AND examStudentQuestionMemory.question_id = #{entity.questionId}
+            </if>
+            <if test="entity.masteryLevel != null">
+                AND examStudentQuestionMemory.mastery_level = #{entity.masteryLevel}
+            </if>
+            <if test="entity.wrongBookStatus != null">
+                AND examStudentQuestionMemory.wrong_book_status = #{entity.wrongBookStatus}
+            </if>
+            <if test="entity.status != null">
+                AND examStudentQuestionMemory.status = #{entity.status}
+            </if>
+            <if test="entity.realName != null and entity.realName != ''">
+                AND examStudent.real_name LIKE CONCAT('%', #{entity.realName}, '%')
+            </if>
+            <if test="entity.courseName != null and entity.courseName != ''">
+                AND examCourse.course_name LIKE CONCAT('%', #{entity.courseName}, '%')
+            </if>
+            <if test="entity.questionTitle != null and entity.questionTitle != ''">
+                AND examQuestion.question_title LIKE CONCAT('%', #{entity.questionTitle}, '%')
+            </if>
+            <if test="entity.nextReviewTimeEnd != null">
+                AND examStudentQuestionMemory.next_review_time &lt;= #{entity.nextReviewTimeEnd}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultType="com.law.train.module.exam_student_question_memory.entity.ExamStudentQuestionMemory">
+        SELECT examStudentQuestionMemory.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        FROM exam_student_question_memory examStudentQuestionMemory
+        LEFT JOIN exam_student examStudent ON examStudentQuestionMemory.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examStudentQuestionMemory.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examStudentQuestionMemory.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+        ORDER BY examStudentQuestionMemory.create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="countQuery" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_student_question_memory examStudentQuestionMemory
+        LEFT JOIN exam_student examStudent ON examStudentQuestionMemory.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examStudentQuestionMemory.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examStudentQuestionMemory.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+    </select>
+
+    <!-- 列表查询（不分页） -->
+    <select id="listQuery" resultType="com.law.train.module.exam_student_question_memory.entity.ExamStudentQuestionMemory">
+        SELECT examStudentQuestionMemory.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        FROM exam_student_question_memory examStudentQuestionMemory
+        LEFT JOIN exam_student examStudent ON examStudentQuestionMemory.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examStudentQuestionMemory.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examStudentQuestionMemory.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+        ORDER BY examStudentQuestionMemory.create_time DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="getById" resultType="com.law.train.module.exam_student_question_memory.entity.ExamStudentQuestionMemory">
+        SELECT examStudentQuestionMemory.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        FROM exam_student_question_memory examStudentQuestionMemory
+        LEFT JOIN exam_student examStudent ON examStudentQuestionMemory.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examStudentQuestionMemory.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examStudentQuestionMemory.question_id = examQuestion.id
+        WHERE examStudentQuestionMemory.id = #{id}
+    </select>
+
+    <!-- 推荐题目：next_review_time <= now，按 recommend_priority desc, next_review_time asc -->
+    <select id="listRecommend" resultType="com.law.train.module.exam_student_question_memory.entity.ExamStudentQuestionMemory">
+        SELECT examStudentQuestionMemory.*
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        FROM exam_student_question_memory examStudentQuestionMemory
+        LEFT JOIN exam_course examCourse ON examStudentQuestionMemory.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examStudentQuestionMemory.question_id = examQuestion.id
+        WHERE examStudentQuestionMemory.student_id = #{studentId}
+          AND examStudentQuestionMemory.status = 1
+          AND examStudentQuestionMemory.next_review_time &lt;= #{now}
+          <if test="courseId != null">AND examStudentQuestionMemory.course_id = #{courseId}</if>
+        ORDER BY examStudentQuestionMemory.recommend_priority DESC, examStudentQuestionMemory.next_review_time ASC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

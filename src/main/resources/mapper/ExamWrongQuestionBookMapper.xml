@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.module.exam_wrong_question_book.mapper.ExamWrongQuestionBookMapper">
+
+    <sql id="whereCondition">
+        <where>
+            <if test="entity.id != null">
+                AND examWrongQuestionBook.id = #{entity.id}
+            </if>
+            <if test="entity.studentId != null">
+                AND examWrongQuestionBook.student_id = #{entity.studentId}
+            </if>
+            <if test="entity.courseId != null">
+                AND examWrongQuestionBook.course_id = #{entity.courseId}
+            </if>
+            <if test="entity.questionType != null">
+                AND examQuestion.question_type = #{entity.questionType}
+            </if>
+            <if test="entity.masterStatus != null">
+                AND examWrongQuestionBook.master_status = #{entity.masterStatus}
+            </if>
+            <if test="entity.status != null">
+                AND examWrongQuestionBook.status = #{entity.status}
+            </if>
+            <if test="entity.realName != null and entity.realName != ''">
+                AND examStudent.real_name LIKE CONCAT('%', #{entity.realName}, '%')
+            </if>
+            <if test="entity.courseName != null and entity.courseName != ''">
+                AND examCourse.course_name LIKE CONCAT('%', #{entity.courseName}, '%')
+            </if>
+            <if test="entity.questionTitle != null and entity.questionTitle != ''">
+                AND examQuestion.question_title LIKE CONCAT('%', #{entity.questionTitle}, '%')
+            </if>
+            <if test="entity.id != null">
+                AND examWrongQuestionBook.id = #{entity.id}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultType="com.law.train.module.exam_wrong_question_book.entity.ExamWrongQuestionBook">
+        SELECT examWrongQuestionBook.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examQuestion.question_type AS questionType
+        , examQuestionPracticeRecord.student_answer AS lastWrongAnswer
+        , examQuestionPracticeRecord.id AS id2
+        FROM exam_wrong_question_book examWrongQuestionBook
+        LEFT JOIN exam_student examStudent ON examWrongQuestionBook.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examWrongQuestionBook.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examWrongQuestionBook.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examWrongQuestionBook.last_practice_record_id = examQuestionPracticeRecord.id
+        <include refid="whereCondition"/>
+        ORDER BY examWrongQuestionBook.create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="countQuery" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_wrong_question_book examWrongQuestionBook
+        LEFT JOIN exam_student examStudent ON examWrongQuestionBook.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examWrongQuestionBook.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examWrongQuestionBook.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examWrongQuestionBook.last_practice_record_id = examQuestionPracticeRecord.id
+        <include refid="whereCondition"/>
+    </select>
+
+    <!-- 列表查询（不分页） -->
+    <select id="listQuery" resultType="com.law.train.module.exam_wrong_question_book.entity.ExamWrongQuestionBook">
+        SELECT examWrongQuestionBook.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examQuestion.question_type AS questionType
+        , examQuestionPracticeRecord.student_answer AS lastWrongAnswer
+        , examQuestionPracticeRecord.id AS id2
+        FROM exam_wrong_question_book examWrongQuestionBook
+        LEFT JOIN exam_student examStudent ON examWrongQuestionBook.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examWrongQuestionBook.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examWrongQuestionBook.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examWrongQuestionBook.last_practice_record_id = examQuestionPracticeRecord.id
+        <include refid="whereCondition"/>
+        ORDER BY examWrongQuestionBook.create_time DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="getById" resultType="com.law.train.module.exam_wrong_question_book.entity.ExamWrongQuestionBook">
+        SELECT examWrongQuestionBook.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examQuestion.question_type AS questionType
+        , examQuestionPracticeRecord.student_answer AS lastWrongAnswer
+        , examQuestionPracticeRecord.id AS id2
+        FROM exam_wrong_question_book examWrongQuestionBook
+        LEFT JOIN exam_student examStudent ON examWrongQuestionBook.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examWrongQuestionBook.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examWrongQuestionBook.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examWrongQuestionBook.last_practice_record_id = examQuestionPracticeRecord.id
+        WHERE examWrongQuestionBook.id = #{id}
+    </select>
+
+    <select id="countActiveWrongByStudent" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_wrong_question_book
+        WHERE student_id = #{studentId} AND status = 1
+    </select>
+
+    <select id="selectWrongCourseDistribution" resultType="java.util.HashMap">
+        SELECT w.course_id AS courseId,
+               IFNULL(MAX(c.course_name), '未分类') AS courseName,
+               COUNT(1) AS wrongCount
+        FROM exam_wrong_question_book w
+        LEFT JOIN exam_course c ON w.course_id = c.id
+        WHERE w.student_id = #{studentId} AND w.status = 1
+        GROUP BY w.course_id
+        ORDER BY wrongCount DESC
+    </select>
+
+    <select id="selectWrongTypeDistribution" resultType="java.util.HashMap">
+        SELECT IFNULL(q.question_type, 0) AS questionType,
+               COUNT(1) AS wrongCount
+        FROM exam_wrong_question_book w
+        LEFT JOIN exam_question q ON w.question_id = q.id
+        WHERE w.student_id = #{studentId} AND w.status = 1
+        GROUP BY IFNULL(q.question_type, 0)
+    </select>
+
+</mapper>

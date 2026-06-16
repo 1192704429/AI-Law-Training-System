@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.module.exam_question_practice_record.mapper.ExamQuestionPracticeRecordMapper">
+
+    <sql id="whereCondition">
+        <where>
+            <if test="entity.id != null">
+                AND examQuestionPracticeRecord.id = #{entity.id}
+            </if>
+            <if test="entity.studentId != null">
+                AND examQuestionPracticeRecord.student_id = #{entity.studentId}
+            </if>
+            <if test="entity.paperId != null">
+                AND examQuestionPracticeRecord.paper_id = #{entity.paperId}
+            </if>
+            <if test="entity.answerTime != null">
+                AND examQuestionPracticeRecord.answer_time = #{entity.answerTime}
+            </if>
+            <if test="entity.practiceType != null">
+                AND examQuestionPracticeRecord.practice_type = #{entity.practiceType}
+            </if>
+            <if test="entity.sourceType != null">
+                AND examQuestionPracticeRecord.source_type = #{entity.sourceType}
+            </if>
+            <if test="entity.isCorrect != null">
+                AND examQuestionPracticeRecord.is_correct = #{entity.isCorrect}
+            </if>
+            <if test="entity.judgeType != null">
+                AND examQuestionPracticeRecord.judge_type = #{entity.judgeType}
+            </if>
+            <if test="entity.difficultyLevel != null">
+                AND examQuestionPracticeRecord.difficulty_level = #{entity.difficultyLevel}
+            </if>
+            <if test="entity.realName != null and entity.realName != ''">
+                AND examStudent.real_name LIKE CONCAT('%', #{entity.realName}, '%')
+            </if>
+            <if test="entity.courseName != null and entity.courseName != ''">
+                AND examCourse.course_name LIKE CONCAT('%', #{entity.courseName}, '%')
+            </if>
+            <if test="entity.questionTitle != null and entity.questionTitle != ''">
+                AND examQuestion.question_title LIKE CONCAT('%', #{entity.questionTitle}, '%')
+            </if>
+            <if test="entity.paperName != null and entity.paperName != ''">
+                AND examPaper.paper_name LIKE CONCAT('%', #{entity.paperName}, '%')
+            </if>
+            <if test="entity.planName != null and entity.planName != ''">
+                AND examReviewPlan.plan_name LIKE CONCAT('%', #{entity.planName}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultType="com.law.train.module.exam_question_practice_record.entity.ExamQuestionPracticeRecord">
+        SELECT examQuestionPracticeRecord.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examPaper.paper_name AS paperName
+        , examReviewPlan.plan_name AS planName
+        FROM exam_question_practice_record examQuestionPracticeRecord
+        LEFT JOIN exam_student examStudent ON examQuestionPracticeRecord.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examQuestionPracticeRecord.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examQuestionPracticeRecord.question_id = examQuestion.id
+        LEFT JOIN exam_paper examPaper ON examQuestionPracticeRecord.paper_id = examPaper.id
+        LEFT JOIN exam_review_plan examReviewPlan ON examQuestionPracticeRecord.plan_id = examReviewPlan.id
+        <include refid="whereCondition"/>
+        ORDER BY examQuestionPracticeRecord.create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="countQuery" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_question_practice_record examQuestionPracticeRecord
+        LEFT JOIN exam_student examStudent ON examQuestionPracticeRecord.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examQuestionPracticeRecord.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examQuestionPracticeRecord.question_id = examQuestion.id
+        LEFT JOIN exam_paper examPaper ON examQuestionPracticeRecord.paper_id = examPaper.id
+        LEFT JOIN exam_review_plan examReviewPlan ON examQuestionPracticeRecord.plan_id = examReviewPlan.id
+        <include refid="whereCondition"/>
+    </select>
+
+    <!-- 列表查询（不分页） -->
+    <select id="listQuery" resultType="com.law.train.module.exam_question_practice_record.entity.ExamQuestionPracticeRecord">
+        SELECT examQuestionPracticeRecord.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examPaper.paper_name AS paperName
+        , examReviewPlan.plan_name AS planName
+        FROM exam_question_practice_record examQuestionPracticeRecord
+        LEFT JOIN exam_student examStudent ON examQuestionPracticeRecord.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examQuestionPracticeRecord.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examQuestionPracticeRecord.question_id = examQuestion.id
+        LEFT JOIN exam_paper examPaper ON examQuestionPracticeRecord.paper_id = examPaper.id
+        LEFT JOIN exam_review_plan examReviewPlan ON examQuestionPracticeRecord.plan_id = examReviewPlan.id
+        <include refid="whereCondition"/>
+        ORDER BY examQuestionPracticeRecord.create_time DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="getById" resultType="com.law.train.module.exam_question_practice_record.entity.ExamQuestionPracticeRecord">
+        SELECT examQuestionPracticeRecord.*
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examPaper.paper_name AS paperName
+        , examReviewPlan.plan_name AS planName
+        FROM exam_question_practice_record examQuestionPracticeRecord
+        LEFT JOIN exam_student examStudent ON examQuestionPracticeRecord.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examQuestionPracticeRecord.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examQuestionPracticeRecord.question_id = examQuestion.id
+        LEFT JOIN exam_paper examPaper ON examQuestionPracticeRecord.paper_id = examPaper.id
+        LEFT JOIN exam_review_plan examReviewPlan ON examQuestionPracticeRecord.plan_id = examReviewPlan.id
+        WHERE examQuestionPracticeRecord.id = #{id}
+    </select>
+
+    <!-- 学生端统计：近一段时间内每日刷题次数（练习、错题重刷） -->
+    <select id="selectStudentDailyPracticeCount" resultType="java.util.HashMap">
+        SELECT DATE_FORMAT(r.answer_time, '%Y-%m-%d') AS statDate,
+               COUNT(1) AS cnt
+        FROM exam_question_practice_record r
+        WHERE r.student_id = #{studentId}
+          AND r.practice_type IN (1, 3)
+          AND r.answer_time &gt;= #{startTime}
+        GROUP BY DATE_FORMAT(r.answer_time, '%Y-%m-%d')
+        ORDER BY statDate
+    </select>
+
+    <!-- 学生端统计：各课程作答正确率 -->
+    <select id="selectStudentCourseAccuracy" resultType="java.util.HashMap">
+        SELECT r.course_id AS courseId,
+               IFNULL(MAX(c.course_name), '未知课程') AS courseName,
+               COUNT(1) AS totalCount,
+               SUM(CASE WHEN r.is_correct = 1 THEN 1 ELSE 0 END) AS correctCount
+        FROM exam_question_practice_record r
+        LEFT JOIN exam_course c ON r.course_id = c.id
+        WHERE r.student_id = #{studentId}
+          AND r.course_id IS NOT NULL
+          AND r.practice_type IN (1, 3)
+        GROUP BY r.course_id
+        ORDER BY courseName
+    </select>
+
+</mapper>

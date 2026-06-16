@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.module.exam_paper_question.mapper.ExamPaperQuestionMapper">
+
+    <sql id="whereCondition">
+        <where>
+            <if test="entity.id != null">
+                AND examPaperQuestion.id = #{entity.id}
+            </if>
+            <if test="entity.paperId != null">
+                AND examPaperQuestion.paper_id = #{entity.paperId}
+            </if>
+            <if test="entity.paperName != null and entity.paperName != ''">
+                AND examPaper.paper_name LIKE CONCAT('%', #{entity.paperName}, '%')
+            </if>
+            <if test="entity.questionTitle != null and entity.questionTitle != ''">
+                AND examQuestion.question_title LIKE CONCAT('%', #{entity.questionTitle}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultType="com.law.train.module.exam_paper_question.entity.ExamPaperQuestion">
+        SELECT examPaperQuestion.*
+        , examPaper.paper_name AS paperName
+        , examQuestion.question_title AS questionTitle
+        , examQuestion.question_type AS questionType
+        , examQuestion.difficulty_level AS difficultyLevel
+        FROM exam_paper_question examPaperQuestion
+        LEFT JOIN exam_paper examPaper ON examPaperQuestion.paper_id = examPaper.id
+        LEFT JOIN exam_question examQuestion ON examPaperQuestion.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+        ORDER BY 
+            CASE examQuestion.question_type
+                WHEN 1 THEN 1  /* 单选 */
+                WHEN 2 THEN 2  /* 多选 */
+                WHEN 3 THEN 3  /* 填空，保留 */
+                WHEN 4 THEN 4  /* 判断，保留 */
+                ELSE 5         /* 主观题 */
+            END ASC,
+            examPaperQuestion.sort_no ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="countQuery" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_paper_question examPaperQuestion
+        LEFT JOIN exam_paper examPaper ON examPaperQuestion.paper_id = examPaper.id
+        LEFT JOIN exam_question examQuestion ON examPaperQuestion.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+    </select>
+
+    <!-- 列表查询（不分页） -->
+    <select id="listQuery" resultType="com.law.train.module.exam_paper_question.entity.ExamPaperQuestion">
+        SELECT examPaperQuestion.*
+        , examPaper.paper_name AS paperName
+        , examQuestion.question_title AS questionTitle
+        , examQuestion.question_type AS questionType
+        , examQuestion.difficulty_level AS difficultyLevel
+        FROM exam_paper_question examPaperQuestion
+        LEFT JOIN exam_paper examPaper ON examPaperQuestion.paper_id = examPaper.id
+        LEFT JOIN exam_question examQuestion ON examPaperQuestion.question_id = examQuestion.id
+        <include refid="whereCondition"/>
+        ORDER BY 
+            CASE examQuestion.question_type
+                WHEN 1 THEN 1  /* 单选 */
+                WHEN 2 THEN 2  /* 多选 */
+                WHEN 3 THEN 3  /* 填空，保留 */
+                WHEN 4 THEN 4  /* 判断，保留 */
+                ELSE 5         /* 主观题 */
+            END ASC,
+            examPaperQuestion.sort_no ASC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="getById" resultType="com.law.train.module.exam_paper_question.entity.ExamPaperQuestion">
+        SELECT examPaperQuestion.*
+        , examPaper.paper_name AS paperName
+        , examQuestion.question_title AS questionTitle
+        , examQuestion.question_type AS questionType
+        , examQuestion.difficulty_level AS difficultyLevel
+        FROM exam_paper_question examPaperQuestion
+        LEFT JOIN exam_paper examPaper ON examPaperQuestion.paper_id = examPaper.id
+        LEFT JOIN exam_question examQuestion ON examPaperQuestion.question_id = examQuestion.id
+        WHERE examPaperQuestion.id = #{id}
+    </select>
+
+</mapper>

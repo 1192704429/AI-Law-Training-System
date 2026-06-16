@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.module.exam_course.mapper.ExamCourseMapper">
+
+    <sql id="whereCondition">
+        <where>
+            <if test="entity.id != null">
+                AND examCourse.id = #{entity.id}
+            </if>
+            <if test="entity.courseName != null and entity.courseName != ''">
+                AND examCourse.course_name LIKE CONCAT('%', #{entity.courseName}, '%')
+            </if>
+            <if test="entity.difficultyLevel != null">
+                AND examCourse.difficulty_level = #{entity.difficultyLevel}
+            </if>
+            <if test="entity.status != null">
+                AND examCourse.status = #{entity.status}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultType="com.law.train.module.exam_course.entity.ExamCourse">
+        SELECT examCourse.*
+        FROM exam_course examCourse
+        <include refid="whereCondition"/>
+        ORDER BY examCourse.create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="countQuery" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_course examCourse
+        <include refid="whereCondition"/>
+    </select>
+
+    <!-- 列表查询（不分页） -->
+    <select id="listQuery" resultType="com.law.train.module.exam_course.entity.ExamCourse">
+        SELECT examCourse.*
+        FROM exam_course examCourse
+        <include refid="whereCondition"/>
+        ORDER BY examCourse.create_time DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="getById" resultType="com.law.train.module.exam_course.entity.ExamCourse">
+        SELECT examCourse.*
+        FROM exam_course examCourse
+        WHERE examCourse.id = #{id}
+    </select>
+
+</mapper>

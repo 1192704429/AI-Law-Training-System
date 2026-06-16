@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.basic.mapper.EchartsMapper">
+
+    <select id="countStudentByGender" resultType="com.law.train.vo.EchartsDataVO">
+        SELECT CASE s.gender WHEN 1 THEN '男' WHEN 2 THEN '女' WHEN 3 THEN '未知' END AS name, COUNT(s.id) AS value FROM exam_student s <if test="status != null and status != -1">WHERE s.status = #{status}</if> GROUP BY s.gender
+    </select>
+
+    <select id="countCourseByDifficulty" resultType="com.law.train.vo.EchartsDataVO">
+        SELECT CASE c.difficulty_level WHEN 1 THEN '基础' WHEN 2 THEN '提升' WHEN 3 THEN '拔高' END AS name, COUNT(c.id) AS value FROM exam_course c <if test="status != null and status != -1">WHERE c.status = #{status}</if> GROUP BY c.difficulty_level
+    </select>
+
+    <select id="countQuestionByType" resultType="com.law.train.vo.EchartsDataVO">
+        SELECT CASE q.question_type WHEN 1 THEN '单选题' WHEN 2 THEN '多选题' WHEN 3 THEN '判断题' WHEN 4 THEN '填空题' WHEN 5 THEN '简答题' END AS name, COUNT(q.id) AS value FROM exam_question q <if test="status != null and status != -1">WHERE q.status = #{status}</if> GROUP BY q.question_type
+    </select>
+
+    <select id="countPracticeByType" resultType="com.law.train.vo.EchartsDataVO">
+        SELECT CASE p.practice_type WHEN 1 THEN '日常刷题' WHEN 2 THEN '模拟考试' WHEN 3 THEN '错题重刷' WHEN 4 THEN '计划复习' END AS name, COUNT(p.id) AS value FROM exam_question_practice_record p <if test="startTime != null and startTime != ''">WHERE p.answer_time &gt;= #{startTime}</if> <if test="endTime != null and endTime != ''">AND p.answer_time &lt;= #{endTime}</if> GROUP BY p.practice_type
+    </select>
+
+    <select id="countReviewPlanByStatus" resultType="com.law.train.vo.EchartsDataVO">
+        SELECT CASE r.status WHEN 0 THEN '已取消' WHEN 1 THEN '进行中' WHEN 2 THEN '已完成' END AS name, COUNT(r.id) AS value FROM exam_review_plan r GROUP BY r.status
+    </select>
+
+    <select id="countPaperByDifficulty" resultType="com.law.train.vo.EchartsDataVO">
+        SELECT CASE p.difficulty_level WHEN 1 THEN '简单' WHEN 2 THEN '中等' WHEN 3 THEN '困难' END AS name, COUNT(p.id) AS value FROM exam_paper p <if test="paperType != null and paperType != -1">WHERE p.paper_type = #{paperType}</if> <if test="status != null and status != -1"><if test="status != null and status != -1">AND p.status = #{status}</if></if> GROUP BY p.difficulty_level
+    </select>
+
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.law.train.module.exam_review_plan_detail.mapper.ExamReviewPlanDetailMapper">
+
+    <sql id="whereCondition">
+        <where>
+            <if test="entity.id != null">
+                AND examReviewPlanDetail.id = #{entity.id}
+            </if>
+            <if test="entity.planId != null">
+                AND examReviewPlanDetail.plan_id = #{entity.planId}
+            </if>
+            <if test="entity.studentId != null">
+                AND examReviewPlanDetail.student_id = #{entity.studentId}
+            </if>
+            <if test="entity.courseId != null">
+                AND examReviewPlanDetail.course_id = #{entity.courseId}
+            </if>
+            <if test="entity.planDateStart != null and entity.planDateEnd != null">
+                AND examReviewPlanDetail.plan_date BETWEEN #{entity.planDateStart} AND #{entity.planDateEnd}
+            </if>
+            <if test="entity.completeStatus != null">
+                AND examReviewPlanDetail.complete_status = #{entity.completeStatus}
+            </if>
+            <if test="entity.planName != null and entity.planName != ''">
+                AND examReviewPlan.plan_name LIKE CONCAT('%', #{entity.planName}, '%')
+            </if>
+            <if test="entity.realName != null and entity.realName != ''">
+                AND examStudent.real_name LIKE CONCAT('%', #{entity.realName}, '%')
+            </if>
+            <if test="entity.courseName != null and entity.courseName != ''">
+                AND examCourse.course_name LIKE CONCAT('%', #{entity.courseName}, '%')
+            </if>
+            <if test="entity.questionTitle != null and entity.questionTitle != ''">
+                AND examQuestion.question_title LIKE CONCAT('%', #{entity.questionTitle}, '%')
+            </if>
+            <if test="entity.id != null">
+                AND examReviewPlanDetail.id = #{entity.id}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageQuery" resultType="com.law.train.module.exam_review_plan_detail.entity.ExamReviewPlanDetail">
+        SELECT examReviewPlanDetail.*
+        , examReviewPlan.plan_name AS planName
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examQuestionPracticeRecord.id AS id2
+        FROM exam_review_plan_detail examReviewPlanDetail
+        LEFT JOIN exam_review_plan examReviewPlan ON examReviewPlanDetail.plan_id = examReviewPlan.id
+        LEFT JOIN exam_student examStudent ON examReviewPlanDetail.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examReviewPlanDetail.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examReviewPlanDetail.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examReviewPlanDetail.practice_record_id = examQuestionPracticeRecord.id
+        <include refid="whereCondition"/>
+        ORDER BY examReviewPlanDetail.create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="countQuery" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM exam_review_plan_detail examReviewPlanDetail
+        LEFT JOIN exam_review_plan examReviewPlan ON examReviewPlanDetail.plan_id = examReviewPlan.id
+        LEFT JOIN exam_student examStudent ON examReviewPlanDetail.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examReviewPlanDetail.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examReviewPlanDetail.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examReviewPlanDetail.practice_record_id = examQuestionPracticeRecord.id
+        <include refid="whereCondition"/>
+    </select>
+
+    <!-- 列表查询（不分页） -->
+    <select id="listQuery" resultType="com.law.train.module.exam_review_plan_detail.entity.ExamReviewPlanDetail">
+        SELECT examReviewPlanDetail.*
+        , examReviewPlan.plan_name AS planName
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examQuestionPracticeRecord.id AS id2
+        FROM exam_review_plan_detail examReviewPlanDetail
+        LEFT JOIN exam_review_plan examReviewPlan ON examReviewPlanDetail.plan_id = examReviewPlan.id
+        LEFT JOIN exam_student examStudent ON examReviewPlanDetail.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examReviewPlanDetail.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examReviewPlanDetail.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examReviewPlanDetail.practice_record_id = examQuestionPracticeRecord.id
+        <include refid="whereCondition"/>
+        ORDER BY examReviewPlanDetail.create_time DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="getById" resultType="com.law.train.module.exam_review_plan_detail.entity.ExamReviewPlanDetail">
+        SELECT examReviewPlanDetail.*
+        , examReviewPlan.plan_name AS planName
+        , examStudent.real_name AS realName
+        , examCourse.course_name AS courseName
+        , examQuestion.question_title AS questionTitle
+        , examQuestionPracticeRecord.id AS id2
+        FROM exam_review_plan_detail examReviewPlanDetail
+        LEFT JOIN exam_review_plan examReviewPlan ON examReviewPlanDetail.plan_id = examReviewPlan.id
+        LEFT JOIN exam_student examStudent ON examReviewPlanDetail.student_id = examStudent.id
+        LEFT JOIN exam_course examCourse ON examReviewPlanDetail.course_id = examCourse.id
+        LEFT JOIN exam_question examQuestion ON examReviewPlanDetail.question_id = examQuestion.id
+        LEFT JOIN exam_question_practice_record examQuestionPracticeRecord ON examReviewPlanDetail.practice_record_id = examQuestionPracticeRecord.id
+        WHERE examReviewPlanDetail.id = #{id}
+    </select>
+
+</mapper>
