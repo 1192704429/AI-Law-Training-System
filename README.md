@@ -19,7 +19,7 @@
 | 网页端   | 学生   | 刷题训练、模拟考试、错题复习与统计 |
 
 
-![功能模块图](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/azhou_promotion/img/module_structure/func_module_1d398a9f9168403ebc6a409812e5c4bd.png)
+![功能模块图](docs/images/01-func-module.png)
 
 
 ## 三、技术栈说明
@@ -49,39 +49,39 @@
 
 登录页：管理员输入信息，登录智能化法考训练系统
 
-![登录页：管理员输入信息，登录智能化法考训练系统](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/4567ead9-ef9c-4c3b-8add-62ecac286a76.jpg)
+![登录页：管理员输入信息，登录智能化法考训练系统](docs/images/02-deng-lu.png)
 
 学生管理页：管理员查询、管理系统内的学生账号信息
 
-![学生管理页：管理员查询、管理系统内的学生账号信息](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/6e725f81-7985-46e6-8e95-012e5fe1bab9.jpg)
+![学生管理页：管理员查询、管理系统内的学生账号信息](docs/images/03-xue-sheng-guan-li.png)
 
 课程管理页：管理法考课程，支持新增、查询、编辑、删除操作
 
-![课程管理页：管理法考课程，支持新增、查询、编辑、删除操作](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/42c074b1-cb51-4272-8e8e-1a32696e8112.jpg)
+![课程管理页：管理法考课程，支持新增、查询、编辑、删除操作](docs/images/04-ke-cheng-guan-li.png)
 
 题目管理页：管理所选法考课程下的题目信息
 
-![题目管理页：管理所选法考课程下的题目信息](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/ef80b6b2-5f03-4df8-8b2f-17dd6e4c0b0b.jpg)
+![题目管理页：管理所选法考课程下的题目信息](docs/images/05-ti-mu-guan-li.png)
 
 题目管理页：查看并管理对应法考课程的题目
 
-![题目管理页：查看并管理对应法考课程的题目](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/7d56e1aa-865f-4311-8176-1da72c5c4594.jpg)
+![题目管理页：查看并管理对应法考课程的题目](docs/images/06-ti-mu-guan-li.png)
 
 试卷管理页：查看管理选中课程下的法考模拟试卷
 
-![试卷管理页：查看管理选中课程下的法考模拟试卷](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/f378513c-954e-4fcd-8f55-28427b18d32f.jpg)
+![试卷管理页：查看管理选中课程下的法考模拟试卷](docs/images/07-shi-juan-guan-li.png)
 
 试卷详情页：查看试卷详情，可进行AI智能组卷添加题目
 
-![试卷详情页：查看试卷详情，可进行AI智能组卷添加题目](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/033a10ce-1eb8-4b3f-8f26-821180b176af.jpg)
+![试卷详情页：查看试卷详情，可进行AI智能组卷添加题目](docs/images/08-shi-juan-xiang-qing.png)
 
 复习计划列表页：查询查看学生创建的复习计划信息
 
-![复习计划列表页：查询查看学生创建的复习计划信息](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/d88d4bf4-56c5-4392-8bbf-02b740ad05db.jpg)
+![复习计划列表页：查询查看学生创建的复习计划信息](docs/images/09-fu-xi-ji-hua-lie-biao.png)
 
 数据统计看板：展示系统多维度业务统计数据
 
-![数据统计看板：展示系统多维度业务统计数据](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/96698246-4687-46cd-86b7-8f16463572cc.jpg)
+![数据统计看板：展示系统多维度业务统计数据](docs/images/10-shu-ju-tong-ji-kan-ban.png)
 
 
 ###### 学生
@@ -100,63 +100,63 @@
 
 注册页：填写信息，完成学生账号注册
 
-![注册页：填写信息，完成学生账号注册](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/170796b3-57b6-4c83-8f46-5d861b55b9c4.jpg)
+![注册页：填写信息，完成学生账号注册](docs/images/11-zhu-ce.png)
 
 登录页：学生输入账号密码登录法考智能训练系统
 
-![登录页：学生输入账号密码登录法考智能训练系统](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/10529bf0-b88f-48fb-81d8-3949faa5c9d2.jpg)
+![登录页：学生输入账号密码登录法考智能训练系统](docs/images/12-deng-lu.png)
 
 首页：展示法考训练各功能入口，供学生选择使用
 
-![首页：展示法考训练各功能入口，供学生选择使用](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/265e013f-30fd-4308-8654-db70e70137d5.jpg)
+![首页：展示法考训练各功能入口，供学生选择使用](docs/images/13-shou-ye.png)
 
 刷题训练页：选择对应课程，开展法考专项刷题练习
 
-![刷题训练页：选择对应课程，开展法考专项刷题练习](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/44817b4b-1bb7-4e2c-8fd6-bfe74e4abe7b.jpg)
+![刷题训练页：选择对应课程，开展法考专项刷题练习](docs/images/14-shua-ti-xun-lian.png)
 
 刷题训练页：为选中的法学课程选择刷题练习模式
 
-![刷题训练页：为选中的法学课程选择刷题练习模式](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/e16029c7-48af-456e-8549-64008c88a304.jpg)
+![刷题训练页：为选中的法学课程选择刷题练习模式](docs/images/15-shua-ti-xun-lian.png)
 
 刷题练习页：进行法学基础理论课程的单选题刷题练习
 
-![刷题练习页：进行法学基础理论课程的单选题刷题练习](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/b5d25e16-077a-462c-8b14-b21769e65a63.jpg)
+![刷题练习页：进行法学基础理论课程的单选题刷题练习](docs/images/16-shua-ti-lian-xi.png)
 
 刷题练习页：展示主观题作答结果与AI评分详情
 
-![刷题练习页：展示主观题作答结果与AI评分详情](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/1c20b4a4-84fe-4ce5-802d-a50e81d176f2.jpg)
+![刷题练习页：展示主观题作答结果与AI评分详情](docs/images/17-shua-ti-lian-xi.png)
 
 模拟考试试卷选择页：选择对应课程的模拟试卷，准备开始考试
 
-![模拟考试试卷选择页：选择对应课程的模拟试卷，准备开始考试](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/d6f039ea-7449-4c52-8a3d-81f116e5f630.jpg)
+![模拟考试试卷选择页：选择对应课程的模拟试卷，准备开始考试](docs/images/18-mo-ni-kao-shi-shi-juan-xuan-ze.png)
 
 模拟考试答题页：作答法学基础理论模拟考试的题目
 
-![模拟考试答题页：作答法学基础理论模拟考试的题目](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/e744897a-6c13-4dd7-8332-84d8b1a4280c.jpg)
+![模拟考试答题页：作答法学基础理论模拟考试的题目](docs/images/19-mo-ni-kao-shi-da-ti.png)
 
 考试记录页：展示学生历史考试，可查看对应作答详情
 
-![考试记录页：展示学生历史考试，可查看对应作答详情](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/e2ef0ad9-f6e9-4771-8b05-5cfbf5509a62.jpg)
+![考试记录页：展示学生历史考试，可查看对应作答详情](docs/images/20-kao-shi-ji-lu.png)
 
 考试详情页：查看本次法学测试的作答对错与得分详情
 
-![考试详情页：查看本次法学测试的作答对错与得分详情](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/fa7420b2-a4d9-42fa-84b7-10a1c5292f95.jpg)
+![考试详情页：查看本次法学测试的作答对错与得分详情](docs/images/21-kao-shi-xiang-qing.png)
 
 计划列表页：查看管理个人的法考复习训练计划
 
-![计划列表页：查看管理个人的法考复习训练计划](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/7e9476f0-a0e7-46b3-86a9-f6e5a3a59482.jpg)
+![计划列表页：查看管理个人的法考复习训练计划](docs/images/22-ji-hua-lie-biao.png)
 
 计划详情页：查看并编辑复习计划的每日复习课程安排
 
-![计划详情页：查看并编辑复习计划的每日复习课程安排](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/2ce7a990-a8ea-4d1a-8f64-c4d38dda9314.jpg)
+![计划详情页：查看并编辑复习计划的每日复习课程安排](docs/images/23-ji-hua-xiang-qing.png)
 
 答题页：作答基于遗忘曲线推荐的法考多选题
 
-![答题页：作答基于遗忘曲线推荐的法考多选题](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/e0b2a0ec-d78c-4fab-8f87-b4ee925fb707.jpg)
+![答题页：作答基于遗忘曲线推荐的法考多选题](docs/images/24-da-ti.png)
 
 个人信息页：修改个人信息，更新账户登录密码
 
-![个人信息页：修改个人信息，更新账户登录密码](https://code-graden-server-dev.oss-cn-beijing.aliyuncs.com/2026-06-15/a6b20c33-53de-4852-8588-ec6514911c8e.jpg)
+![个人信息页：修改个人信息，更新账户登录密码](docs/images/25-ge-ren-xin-xi.png)
 
 
 ## 五、主要业务流程
